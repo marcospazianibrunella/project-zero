@@ -23,34 +23,33 @@ module ethernet_subsys (
 
     /* Reference Clocking Out */
     output clk_161mhz_out,
+    output clk_usr_logic,
 
     /* AXI-Stream Datapath */
 
-    input [`AXIS_ETH_DATA_WIDTH-1:0] s_qsfp0_axis_tdata,   // To QSFP0
-    input [`AXIS_ETH_KEEP_WIDTH-1:0] s_qsfp0_axis_tkeep,
-    input                            s_qsfp0_axis_tvalid,
-    input                            s_qsfp0_axis_tready,
-    input                            s_qsfp0_axis_tlast,
-    input [                16+1-1:0] s_qsfp0_axis_tuser,
+    input  [`AXIS_ETH_DATA_WIDTH-1:0] s_qsfp0_axis_tdata,   // To QSFP0
+    input  [`AXIS_ETH_KEEP_WIDTH-1:0] s_qsfp0_axis_tkeep,
+    input                             s_qsfp0_axis_tvalid,
+    output                            s_qsfp0_axis_tready,
+    input                             s_qsfp0_axis_tlast,
+    input  [                16+1-1:0] s_qsfp0_axis_tuser,
 
     output [`AXIS_ETH_DATA_WIDTH-1:0] m_qsfp0_axis_tdata,   // From QSFP0 
     output [`AXIS_ETH_KEEP_WIDTH-1:0] m_qsfp0_axis_tkeep,
     output                            m_qsfp0_axis_tvalid,
-    output                            m_qsfp0_axis_tready,
     output                            m_qsfp0_axis_tlast,
     output [                16+1-1:0] m_qsfp0_axis_tuser,
 
-    input [`AXIS_ETH_DATA_WIDTH-1:0] s_qsfp1_axis_tdata,   // To QSFP1
-    input [`AXIS_ETH_KEEP_WIDTH-1:0] s_qsfp1_axis_tkeep,
-    input                            s_qsfp1_axis_tvalid,
-    input                            s_qsfp1_axis_tready,
-    input                            s_qsfp1_axis_tlast,
-    input [                16+1-1:0] s_qsfp1_axis_tuser,
+    input  [`AXIS_ETH_DATA_WIDTH-1:0] s_qsfp1_axis_tdata,   // To QSFP1
+    input  [`AXIS_ETH_KEEP_WIDTH-1:0] s_qsfp1_axis_tkeep,
+    input                             s_qsfp1_axis_tvalid,
+    output                            s_qsfp1_axis_tready,
+    input                             s_qsfp1_axis_tlast,
+    input  [                16+1-1:0] s_qsfp1_axis_tuser,
 
     output [`AXIS_ETH_DATA_WIDTH-1:0] m_qsfp1_axis_tdata,   // From QSFP1 
     output [`AXIS_ETH_KEEP_WIDTH-1:0] m_qsfp1_axis_tkeep,
     output                            m_qsfp1_axis_tvalid,
-    output                            m_qsfp1_axis_tready,
     output                            m_qsfp1_axis_tlast,
     output [                16+1-1:0] m_qsfp1_axis_tuser
 );
@@ -76,6 +75,8 @@ module ethernet_subsys (
 
   assign qsfp1_tx_clk_int = qsfp1_txuserclk2;
   assign qsfp1_rx_clk_int = qsfp1_txuserclk2;
+
+  assign clk_usr_logic = qsfp0_rx_clk_int;
 
 
   cmac_usplus_0 qsfp0_cmac_inst (

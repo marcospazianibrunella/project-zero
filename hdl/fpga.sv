@@ -7,17 +7,6 @@ module fpga (
     input  sys_rstn,
     output hbm_cattrip,
 
-    /* PCIe */
-    input pcie_refclk1_p,
-    input pcie_refclk1_n,
-    input pcie_rst_n,
-
-    /* PCIe XDMA GTY 227 */
-    input  [3:0] pcie_4x_0_rx_p,
-    input  [3:0] pcie_4x_0_rx_n,
-    output [3:0] pcie_4x_0_tx_p,
-    output [3:0] pcie_4x_0_tx_n,
-
     /* Ethernet */
     /* CMAC QSFP0 */
     input  [3:0] qsfp0_rx_p,
@@ -43,7 +32,7 @@ module fpga (
   assign hbm_cattrip = 1'b0; /* To avoid powerdown of the board due to HBM Overtemperature signal wrong interpretation */
 
   /* Systems Clocks and Resets */
-  logic clk_161mhz_ref_i;
+  logic clk_161mhz_ref_i, clk_usr_logic_i;
 
   logic clk_50mhz_i, rst_50mhz_i;
   logic clk_125mhz_i, rst_125mhz_i;
@@ -122,6 +111,7 @@ module fpga (
       .qsfp1_gt_tx_n           (qsfp1_tx_n),
 
       .clk_161mhz_out(clk_161mhz_ref_i),  // Master Clock for the entire FPGA
+      .clk_usr_logic (clk_usr_logic_i),
 
       .s_qsfp0_axis_tdata (s_qsfp0_axis_tdata),  // To QSFP0
       .s_qsfp0_axis_tkeep (s_qsfp0_axis_tkeep),
@@ -133,7 +123,6 @@ module fpga (
       .m_qsfp0_axis_tdata (m_qsfp0_axis_tdata),  // From QSFP0 
       .m_qsfp0_axis_tkeep (m_qsfp0_axis_tkeep),
       .m_qsfp0_axis_tvalid(m_qsfp0_axis_tvalid),
-      .m_qsfp0_axis_tready(m_qsfp0_axis_tready),
       .m_qsfp0_axis_tlast (m_qsfp0_axis_tlast),
       .m_qsfp0_axis_tuser (m_qsfp0_axis_tuser),
 
@@ -147,22 +136,30 @@ module fpga (
       .m_qsfp1_axis_tdata (m_qsfp1_axis_tdata),  // From QSFP1 
       .m_qsfp1_axis_tkeep (m_qsfp1_axis_tkeep),
       .m_qsfp1_axis_tvalid(m_qsfp1_axis_tvalid),
-      .m_qsfp1_axis_tready(m_qsfp1_axis_tready),
       .m_qsfp1_axis_tlast (m_qsfp1_axis_tlast),
       .m_qsfp1_axis_tuser (m_qsfp1_axis_tuser)
 
   );
 
-  PCIe_subsys PCIe_SUBSYS_i (
-      .sys_clk   (pcie_sys_clk),
-      .sys_clk_gt(pcie_sys_clk_gt),
-      .sys_rst_n (pcie_rst_n),
-
-      .pcie_4x_0_rx_p(pcie_4x_0_rx_p),
-      .pcie_4x_0_rx_n(pcie_4x_0_rx_n),
-      .pcie_4x_0_tx_p(pcie_4x_0_tx_p),
-      .pcie_4x_0_tx_n(pcie_4x_0_tx_n)
+`ifdef DEBUG
+  ila_axis ila_axis_qsfp0_rx (
+      .clk(clk_usr_logic_i),  // input wire clk
+      .probe0(m_qsfp0_axis_tvalid),  // input wire [0:0]  probe0  
+      .probe1(s_qsfp0_axis_tready),  // input wire [0:0]  probe1 
+      .probe2(m_qsfp0_axis_tlast),  // input wire [0:0]  probe2 
+      .probe3(m_qsfp0_axis_tdata),  // input wire [511:0]  probe3 
+      .probe4(m_qsfp0_axis_tkeep)  // input wire [63:0]  probe4
   );
+
+  ila_axis ila_axis_qsfp1_rx (
+      .clk(clk_usr_logic_i),  // input wire clk
+      .probe0(m_qsfp1_axis_tvalid),  // input wire [0:0]  probe0  
+      .probe1(s_qsfp1_axis_tready),  // input wire [0:0]  probe1 
+      .probe2(m_qsfp1_axis_tlast),  // input wire [0:0]  probe2 
+      .probe3(m_qsfp1_axis_tdata),  // input wire [511:0]  probe3 
+      .probe4(m_qsfp1_axis_tkeep)  // input wire [63:0]  probe4
+  );
+`endif
 
   /* Loopback on QSFPs */
   assign s_qsfp0_axis_tdata  = m_qsfp0_axis_tdata;

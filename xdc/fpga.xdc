@@ -134,30 +134,30 @@ set_output_delay 0 [get_ports {qsfp1_refclk_oe_b qsfp1_refclk_fs}]
 
 
 # PCIe Clocks and Reset
-set_property -dict {LOC AR15} [get_ports pcie_refclk_1_p] ;# MGTREFCLK0P_225 (for x16 or x8 bifurcated lanes 8-16)
-set_property -dict {LOC AR14} [get_ports pcie_refclk_1_n] ;# MGTREFCLK0N_225 (for x16 or x8 bifurcated lanes 8-16)
-set_property -dict {LOC BH26 IOSTANDARD LVCMOS18 PULLUP true} [get_ports pcie_rst_n]
-set_false_path -from [get_ports {pcie_rst_n}]
-set_input_delay 0 [get_ports {pcie_rst_n}]
-
-# PCIe GTY 227 
-set_property -dict {LOC AN1  }  [get_ports {pcie_4x_0_rx_n[3]} ] ;# Bank 227 - MGTYRXN0_227
-set_property -dict {LOC AN5  }  [get_ports {pcie_4x_0_rx_n[2]} ] ;# Bank 227 - MGTYRXN1_227
-set_property -dict {LOC AM3  }  [get_ports {pcie_4x_0_rx_n[1]} ] ;# Bank 227 - MGTYRXN2_227
-set_property -dict {LOC AL1  }  [get_ports {pcie_4x_0_rx_n[0]} ] ;# Bank 227 - MGTYRXN3_227
-set_property -dict {LOC AN2  }  [get_ports {pcie_4x_0_rx_p[3]} ] ;# Bank 227 - MGTYRXP0_227
-set_property -dict {LOC AN6  }  [get_ports {pcie_4x_0_rx_p[2]} ] ;# Bank 227 - MGTYRXP1_227
-set_property -dict {LOC AM4  }  [get_ports {pcie_4x_0_rx_p[1]} ] ;# Bank 227 - MGTYRXP2_227
-set_property -dict {LOC AL2  }  [get_ports {pcie_4x_0_rx_p[0]} ] ;# Bank 227 - MGTYRXP3_227
-set_property -dict {LOC AP8  }  [get_ports {pcie_4x_0_tx_n[3]} ] ;# Bank 227 - MGTYTXN0_227
-set_property -dict {LOC AN10 }  [get_ports {pcie_4x_0_tx_n[2]} ] ;# Bank 227 - MGTYTXN1_227
-set_property -dict {LOC AM8  }  [get_ports {pcie_4x_0_tx_n[1]} ] ;# Bank 227 - MGTYTXN2_227
-set_property -dict {LOC AL10 }  [get_ports {pcie_4x_0_tx_n[0]} ] ;# Bank 227 - MGTYTXN3_227
-set_property -dict {LOC AP9  }  [get_ports {pcie_4x_0_tx_p[3]} ] ;# Bank 227 - MGTYTXP0_227
-set_property -dict {LOC AN11 }  [get_ports {pcie_4x_0_tx_p[2]} ] ;# Bank 227 - MGTYTXP1_227
-set_property -dict {LOC AM9  }  [get_ports {pcie_4x_0_tx_p[1]} ] ;# Bank 227 - MGTYTXP2_227
-set_property -dict {LOC AL11 }  [get_ports {pcie_4x_0_tx_p[0]} ] ;# Bank 227 - MGTYTXP3_227
-
-
-# Clock Constraints 
-create_clock -period 10 -name pcie_mgt_refclk_1 [get_ports pcie_refclk_1_p]
+#set_property -dict {LOC AR15} [get_ports pcie_refclk_1_p] ;# MGTREFCLK0P_225 (for x16 or x8 bifurcated lanes 8-16)
+#set_property -dict {LOC AR14} [get_ports pcie_refclk_1_n] ;# MGTREFCLK0N_225 (for x16 or x8 bifurcated lanes 8-16)
+#set_property -dict {LOC BH26 IOSTANDARD LVCMOS18 PULLUP true} [get_ports pcie_rst_n]
+#set_false_path -from [get_ports {pcie_rst_n}]
+#set_input_delay 0 [get_ports {pcie_rst_n}]
+#
+## PCIe GTY 227 
+#set_property -dict {LOC AN1  }  [get_ports {pcie_4x_0_rx_n[3]} ] ;# Bank 227 - MGTYRXN0_227
+#set_property -dict {LOC AN5  }  [get_ports {pcie_4x_0_rx_n[2]} ] ;# Bank 227 - MGTYRXN1_227
+#set_property -dict {LOC AM3  }  [get_ports {pcie_4x_0_rx_n[1]} ] ;# Bank 227 - MGTYRXN2_227
+#set_property -dict {LOC AL1  }  [get_ports {pcie_4x_0_rx_n[0]} ] ;# Bank 227 - MGTYRXN3_227
+#set_property -dict {LOC AN2  }  [get_ports {pcie_4x_0_rx_p[3]} ] ;# Bank 227 - MGTYRXP0_227
+#set_property -dict {LOC AN6  }  [get_ports {pcie_4x_0_rx_p[2]} ] ;# Bank 227 - MGTYRXP1_227
+#set_property -dict {LOC AM4  }  [get_ports {pcie_4x_0_rx_p[1]} ] ;# Bank 227 - MGTYRXP2_227
+#set_property -dict {LOC AL2  }  [get_ports {pcie_4x_0_rx_p[0]} ] ;# Bank 227 - MGTYRXP3_227
+#set_property -dict {LOC AP8  }  [get_ports {pcie_4x_0_tx_n[3]} ] ;# Bank 227 - MGTYTXN0_227
+#set_property -dict {LOC AN10 }  [get_ports {pcie_4x_0_tx_n[2]} ] ;# Bank 227 - MGTYTXN1_227
+#set_property -dict {LOC AM8  }  [get_ports {pcie_4x_0_tx_n[1]} ] ;# Bank 227 - MGTYTXN2_227
+#set_property -dict {LOC AL10 }  [get_ports {pcie_4x_0_tx_n[0]} ] ;# Bank 227 - MGTYTXN3_227
+#set_property -dict {LOC AP9  }  [get_ports {pcie_4x_0_tx_p[3]} ] ;# Bank 227 - MGTYTXP0_227
+#set_property -dict {LOC AN11 }  [get_ports {pcie_4x_0_tx_p[2]} ] ;# Bank 227 - MGTYTXP1_227
+#set_property -dict {LOC AM9  }  [get_ports {pcie_4x_0_tx_p[1]} ] ;# Bank 227 - MGTYTXP2_227
+#set_property -dict {LOC AL11 }  [get_ports {pcie_4x_0_tx_p[0]} ] ;# Bank 227 - MGTYTXP3_227
+#
+#
+## Clock Constraints 
+#create_clock -period 10 -name pcie_mgt_refclk_1 [get_ports pcie_refclk_1_p]
